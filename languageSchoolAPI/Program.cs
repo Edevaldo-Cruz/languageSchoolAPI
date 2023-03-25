@@ -5,7 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<LanguageSchoolContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoPadrao")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<LogEntryContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("LogConnection")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
