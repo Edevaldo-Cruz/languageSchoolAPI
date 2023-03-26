@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using languageSchoolAPI.Context;
+﻿using languageSchoolAPI.Context;
 using languageSchoolAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +17,13 @@ namespace languageSchoolAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Enrollment>>> GetEnrollments()
+        public async Task<ActionResult<IEnumerable<EnrollmentModel>>> GetEnrollments()
         {
             return await _context.Enrollments.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Enrollment>> GetEnrollment(int id)
+        public async Task<ActionResult<EnrollmentModel>> GetEnrollment(int id)
         {
             var enrollment = await _context.Enrollments.FindAsync(id);
 
@@ -39,7 +36,7 @@ namespace languageSchoolAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Enrollment>> PostEnrollment(Enrollment enrollment)
+        public async Task<ActionResult<EnrollmentModel>> PostEnrollment(EnrollmentModel enrollment)
         {
             _context.Enrollments.Add(enrollment);
             await _context.SaveChangesAsync();
@@ -48,7 +45,7 @@ namespace languageSchoolAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEnrollment(int id, Enrollment enrollment)
+        public async Task<IActionResult> PutEnrollment(int id, EnrollmentModel enrollment)
         {
             if (id != enrollment.Id)
             {

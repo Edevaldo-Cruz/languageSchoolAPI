@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using languageSchoolAPI.Context;
+using languageSchoolAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using languageSchoolAPI.Context;
-using languageSchoolAPI.Models;
 
 namespace languageSchoolAPI.Controllers
 {
@@ -21,16 +18,16 @@ namespace languageSchoolAPI.Controllers
 
         // GET: api/LogEntry
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LogEntry>>> GetLogEntries()
+        public async Task<ActionResult<IEnumerable<LogEntryModel>>> GetLogEntry()
         {
-            return await _context.LogEntries.ToListAsync();
+            return await _context.LogEntry.ToListAsync();
         }
 
         // GET: api/LogEntry/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LogEntry>> GetLogEntry(int id)
+        public async Task<ActionResult<LogEntryModel>> GetLogEntry(int id)
         {
-            var logEntry = await _context.LogEntries.FindAsync(id);
+            var logEntry = await _context.LogEntry.FindAsync(id);
 
             if (logEntry == null)
             {
@@ -40,65 +37,25 @@ namespace languageSchoolAPI.Controllers
             return logEntry;
         }
 
-        // PUT: api/LogEntry/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLogEntry(int id, LogEntry logEntry)
-        {
-            if (id != logEntry.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(logEntry).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LogEntryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //private bool LogEntryExists(int id)
+        //{
+        //    return _context.LogEntry.Any(e => e.Id == id);
+        //}
 
-            return NoContent();
-        }
-
-        // POST: api/LogEntry
         [HttpPost]
-        public async Task<ActionResult<LogEntry>> PostLogEntry(LogEntry logEntry)
+        public async Task<ActionResult<LogEntryModel>> CreateLogEntry(string description, string type)
         {
-            _context.LogEntries.Add(logEntry);
+            LogEntryModel log = new LogEntryModel();
+            log.Description = description;
+            log.Date = DateTime.Now;
+            log.Type = type;
+
+            _context.LogEntry.Add(log);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLogEntry", new { id = logEntry.Id }, logEntry);
-        }
-
-        // DELETE: api/LogEntry/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLogEntry(int id)
-        {
-            var logEntry = await _context.LogEntries.FindAsync(id);
-            if (logEntry == null)
-            {
-                return NotFound();
-            }
-
-            _context.LogEntries.Remove(logEntry);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool LogEntryExists(int id)
-        {
-            return _context.LogEntries.Any(e => e.Id == id);
+            return Ok();
         }
     }
 }

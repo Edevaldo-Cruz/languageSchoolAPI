@@ -1,6 +1,6 @@
 ﻿namespace languageSchoolAPI.Models
 {
-    public class Enrollment
+    public class EnrollmentModel
     {
         public int Id { get; set; }
         public int StudentId { get; set; }

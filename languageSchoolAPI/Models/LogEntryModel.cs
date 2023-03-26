@@ -1,6 +1,6 @@
 ﻿namespace languageSchoolAPI.Models
 {
-    public class LogEntry
+    public class LogEntryModel
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

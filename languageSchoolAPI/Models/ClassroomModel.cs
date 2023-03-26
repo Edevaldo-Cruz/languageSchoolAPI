@@ -1,6 +1,6 @@
 ﻿namespace languageSchoolAPI.Models
 {
-    public class Classroom
+    public class ClassroomModel
     {
         public int Id { get; set; }
         public string Course { get; set; }

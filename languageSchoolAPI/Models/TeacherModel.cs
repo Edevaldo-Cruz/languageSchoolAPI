@@ -1,6 +1,6 @@
 ﻿namespace languageSchoolAPI.Models
 {
-    public class Student
+    public class TeacherModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -11,8 +11,6 @@
         public DateTime Birthdate { get; set; }
         public string Gender { get; set; }
         public string Nationality { get; set; }
-        public int ProficiencyLevel { get; set; }
         public string Observation { get; set; }
     }
-
 }

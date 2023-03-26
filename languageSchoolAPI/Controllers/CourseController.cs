@@ -2,9 +2,6 @@
 using languageSchoolAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace languageSchoolAPI.Controllers
 {
@@ -21,14 +18,14 @@ namespace languageSchoolAPI.Controllers
 
         // GET: api/Courses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<CourseModel>>> GetCourses()
         {
             return await _context.Courses.ToListAsync();
         }
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(int id)
+        public async Task<ActionResult<CourseModel>> GetCourse(int id)
         {
             var course = await _context.Courses.FindAsync(id);
 
@@ -42,7 +39,7 @@ namespace languageSchoolAPI.Controllers
 
         // POST: api/Courses
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<CourseModel>> PostCourse(CourseModel course)
         {
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
@@ -52,7 +49,7 @@ namespace languageSchoolAPI.Controllers
 
         // PUT: api/Courses/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, Course course)
+        public async Task<IActionResult> PutCourse(int id, CourseModel course)
         {
             if (id != course.Id)
             {

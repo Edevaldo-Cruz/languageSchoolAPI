@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using languageSchoolAPI.Context;
+using languageSchoolAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using languageSchoolAPI.Context;
-using languageSchoolAPI.Models;
 
 namespace languageSchoolAPI.Controllers
 {
@@ -21,14 +18,14 @@ namespace languageSchoolAPI.Controllers
 
         // GET: api/Classrooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Classroom>>> GetClassrooms()
+        public async Task<ActionResult<IEnumerable<ClassroomModel>>> GetClassrooms()
         {
             return await _context.Classrooms.ToListAsync();
         }
 
         // GET: api/Classrooms/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Classroom>> GetClassroom(int id)
+        public async Task<ActionResult<ClassroomModel>> GetClassroom(int id)
         {
             var classroom = await _context.Classrooms.FindAsync(id);
 
@@ -42,7 +39,7 @@ namespace languageSchoolAPI.Controllers
 
         // PUT: api/Classrooms/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClassroom(int id, Classroom classroom)
+        public async Task<IActionResult> PutClassroom(int id, ClassroomModel classroom)
         {
             if (id != classroom.Id)
             {
@@ -72,7 +69,7 @@ namespace languageSchoolAPI.Controllers
 
         // POST: api/Classrooms
         [HttpPost]
-        public async Task<ActionResult<Classroom>> PostClassroom(Classroom classroom)
+        public async Task<ActionResult<ClassroomModel>> PostClassroom(ClassroomModel classroom)
         {
             _context.Classrooms.Add(classroom);
             await _context.SaveChangesAsync();

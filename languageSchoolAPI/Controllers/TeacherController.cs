@@ -2,9 +2,6 @@
 using languageSchoolAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace languageSchoolAPI.Controllers
 {
@@ -21,14 +18,14 @@ namespace languageSchoolAPI.Controllers
 
         // GET: api/Teachers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Teacher>>> GetTeachers()
+        public async Task<ActionResult<IEnumerable<TeacherModel>>> GetTeachers()
         {
             return await _context.Teachers.ToListAsync();
         }
 
         // GET: api/Teachers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Teacher>> GetTeacher(int id)
+        public async Task<ActionResult<TeacherModel>> GetTeacher(int id)
         {
             var teacher = await _context.Teachers.FindAsync(id);
 
@@ -42,7 +39,7 @@ namespace languageSchoolAPI.Controllers
 
         // PUT: api/Teachers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeacher(int id, Teacher teacher)
+        public async Task<IActionResult> PutTeacher(int id, TeacherModel teacher)
         {
             if (id != teacher.Id)
             {
@@ -72,7 +69,7 @@ namespace languageSchoolAPI.Controllers
 
         // POST: api/Teachers
         [HttpPost]
-        public async Task<ActionResult<Teacher>> PostTeacher(Teacher teacher)
+        public async Task<ActionResult<TeacherModel>> PostTeacher(TeacherModel teacher)
         {
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();

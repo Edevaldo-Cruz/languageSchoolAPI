@@ -9,7 +9,7 @@ namespace languageSchoolAPI.Context
         {
 
         }
-        public DbSet<LogEntry> LogEntries { get; set; }
+        public DbSet<LogEntryModel> LogEntry { get; set; }
 
     }
 }
