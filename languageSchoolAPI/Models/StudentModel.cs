@@ -14,7 +14,8 @@ public class ProficiencyLevel
 
 public class StudentModel
 {
-    public int Id { get; set; }
+    [Key]
+    public int StudentId { get; set; }
 
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     [StringLength(100, ErrorMessage = "O campo Nome deve ter no máximo 100 caracteres.")]

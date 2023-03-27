@@ -41,7 +41,7 @@ namespace languageSchoolAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeacher(int id, TeacherModel teacher)
         {
-            if (id != teacher.Id)
+            if (id != teacher.TeacherId)
             {
                 return BadRequest();
             }
@@ -74,7 +74,7 @@ namespace languageSchoolAPI.Controllers
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTeacher", new { id = teacher.Id }, teacher);
+            return CreatedAtAction("GetTeacher", new { id = teacher.TeacherId }, teacher);
         }
 
         // DELETE: api/Teachers/5
@@ -95,7 +95,7 @@ namespace languageSchoolAPI.Controllers
 
         private bool TeacherExists(int id)
         {
-            return _context.Teachers.Any(e => e.Id == id);
+            return _context.Teachers.Any(e => e.TeacherId == id);
         }
     }
 }

@@ -128,7 +128,7 @@ namespace languageSchoolAPI.Controllers
 
         private async Task<IActionResult> ValidateStudent(StudentModel student, int? studentId = null)
         {
-            var existingStudent = await _context.Students.FirstOrDefaultAsync(s => s.CPF == student.CPF && (!studentId.HasValue || s.Id != studentId.Value));
+            var existingStudent = await _context.Students.FirstOrDefaultAsync(s => s.CPF == student.CPF && (!studentId.HasValue || s.StudentId != studentId.Value));
             if (existingStudent != null)
             {
                 string descripton = "Erro ao tentar gravar o registro do aluno " + student.Name + ". CPF duplicado.";

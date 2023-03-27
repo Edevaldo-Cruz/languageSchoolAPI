@@ -41,7 +41,7 @@ namespace languageSchoolAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClassroom(int id, ClassroomModel classroom)
         {
-            if (id != classroom.Id)
+            if (id != classroom.ClassroomId)
             {
                 return BadRequest();
             }
@@ -74,7 +74,7 @@ namespace languageSchoolAPI.Controllers
             _context.Classrooms.Add(classroom);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetClassroom), new { id = classroom.Id }, classroom);
+            return CreatedAtAction(nameof(GetClassroom), new { id = classroom.ClassroomId }, classroom);
         }
 
         // DELETE: api/Classrooms/5
@@ -95,7 +95,7 @@ namespace languageSchoolAPI.Controllers
 
         private bool ClassroomExists(int id)
         {
-            return _context.Classrooms.Any(e => e.Id == id);
+            return _context.Classrooms.Any(e => e.ClassroomId == id);
         }
     }
 }

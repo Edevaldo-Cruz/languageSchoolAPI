@@ -12,8 +12,8 @@ using languageSchoolAPI.Context;
 namespace languageSchoolAPI.Migrations
 {
     [DbContext(typeof(LanguageSchoolContext))]
-    [Migration("20230326125457_firstMigration")]
-    partial class firstMigration
+    [Migration("20230327225343_teacherTable")]
+    partial class teacherTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,11 +101,11 @@ namespace languageSchoolAPI.Migrations
 
             modelBuilder.Entity("StudentModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -151,25 +151,21 @@ namespace languageSchoolAPI.Migrations
                     b.Property<int>("ProficiencyLevelId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("StudentId");
 
                     b.HasIndex("CPF")
                         .IsUnique();
-
-                    b.HasIndex("GenderId");
-
-                    b.HasIndex("ProficiencyLevelId");
 
                     b.ToTable("Students");
                 });
 
             modelBuilder.Entity("languageSchoolAPI.Models.ClassroomModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClassroomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassroomId"));
 
                     b.Property<string>("Course")
                         .IsRequired()
@@ -186,43 +182,25 @@ namespace languageSchoolAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Schedule")
+                    b.Property<int>("Teacher")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Time")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Teacher")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("ClassroomId");
 
                     b.ToTable("Classrooms");
                 });
 
-            modelBuilder.Entity("languageSchoolAPI.Models.CourseModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Courses");
-                });
-
             modelBuilder.Entity("languageSchoolAPI.Models.EnrollmentModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EnrollmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentId"));
 
                     b.Property<int>("ClassroomId")
                         .HasColumnType("int");
@@ -233,18 +211,18 @@ namespace languageSchoolAPI.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("EnrollmentId");
 
                     b.ToTable("Enrollments");
                 });
 
             modelBuilder.Entity("languageSchoolAPI.Models.TeacherModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TeacherId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -281,28 +259,9 @@ namespace languageSchoolAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("TeacherId");
 
                     b.ToTable("Teachers");
-                });
-
-            modelBuilder.Entity("StudentModel", b =>
-                {
-                    b.HasOne("Gender", "Gender")
-                        .WithMany()
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProficiencyLevel", "ProficiencyLevel")
-                        .WithMany()
-                        .HasForeignKey("ProficiencyLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Gender");
-
-                    b.Navigation("ProficiencyLevel");
                 });
 #pragma warning restore 612, 618
         }

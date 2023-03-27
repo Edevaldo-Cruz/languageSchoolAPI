@@ -41,13 +41,13 @@ namespace languageSchoolAPI.Controllers
             _context.Enrollments.Add(enrollment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetEnrollment), new { id = enrollment.Id }, enrollment);
+            return CreatedAtAction(nameof(GetEnrollment), new { id = enrollment.EnrollmentId }, enrollment);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEnrollment(int id, EnrollmentModel enrollment)
         {
-            if (id != enrollment.Id)
+            if (id != enrollment.EnrollmentId)
             {
                 return BadRequest();
             }
@@ -90,7 +90,7 @@ namespace languageSchoolAPI.Controllers
 
         private bool EnrollmentExists(int id)
         {
-            return _context.Enrollments.Any(e => e.Id == id);
+            return _context.Enrollments.Any(e => e.EnrollmentId == id);
         }
     }
 }

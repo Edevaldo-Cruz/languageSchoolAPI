@@ -11,7 +11,6 @@ namespace languageSchoolAPI.Context
         }
 
         public DbSet<StudentModel> Students { get; set; }
-        public DbSet<CourseModel> Courses { get; set; }
         public DbSet<EnrollmentModel> Enrollments { get; set; }
         public DbSet<TeacherModel> Teachers { get; set; }
         public DbSet<ClassroomModel> Classrooms { get; set; }

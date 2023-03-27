@@ -1,8 +1,11 @@
-﻿namespace languageSchoolAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace languageSchoolAPI.Models
 {
     public class TeacherModel
     {
-        public int Id { get; set; }
+        [Key]
+        public int TeacherId { get; set; }
         public string Name { get; set; }
         public string CPF { get; set; }
         public string Phone { get; set; }
