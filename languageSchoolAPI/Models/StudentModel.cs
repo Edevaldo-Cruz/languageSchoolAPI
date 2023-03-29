@@ -44,11 +44,7 @@ public class StudentModel
 
     [Required(ErrorMessage = "O campo Gênero é obrigatório.")]
     public int GenderId { get; set; }
-    //public Gender Gender { get; set; }
-
-    [Required(ErrorMessage = "O campo Nível de Proficiência é obrigatório.")]
-    public int ProficiencyLevelId { get; set; }
-    //public ProficiencyLevel ProficiencyLevel { get; set; }
+    //public Gender Gender { get; set; }    
 
     [Required(ErrorMessage = "O campo Nacionalidade é obrigatório.")]
     [StringLength(100, ErrorMessage = "O campo Nacionalidade deve ter no máximo 100 caracteres.")]
@@ -56,5 +52,13 @@ public class StudentModel
 
     [StringLength(500, ErrorMessage = "O campo Observação deve ter no máximo 500 caracteres.")]
     public string Observation { get; set; }
+    public bool English { get; set; }
+    public int ProficiencyLevelEnglish { get; set; }
+    public bool Spanish { get; set; }
+    public int ProficiencyLevelSpanish { get; set; }
+    public bool French { get; set; }
+    public int ProficiencyLevelFrench { get; set; }
+
+    
 }
 

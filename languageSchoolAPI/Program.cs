@@ -18,6 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<LogEntryController>();
+builder.Services.AddTransient<EnrollmentController>();
+builder.Services.AddTransient<StudentsController>();
 
 builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;

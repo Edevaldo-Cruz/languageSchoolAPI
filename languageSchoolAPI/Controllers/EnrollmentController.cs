@@ -16,13 +16,13 @@ namespace languageSchoolAPI.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GetEnrollments")]
         public async Task<ActionResult<IEnumerable<EnrollmentModel>>> GetEnrollments()
         {
             return await _context.Enrollments.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetEnrollment/{id}")]
         public async Task<ActionResult<EnrollmentModel>> GetEnrollment(int id)
         {
             var enrollment = await _context.Enrollments.FindAsync(id);
@@ -35,7 +35,7 @@ namespace languageSchoolAPI.Controllers
             return enrollment;
         }
 
-        [HttpPost]
+        [HttpPost("PostEnrollment")]
         public async Task<ActionResult<EnrollmentModel>> PostEnrollment(EnrollmentModel enrollment)
         {
             _context.Enrollments.Add(enrollment);
@@ -44,7 +44,7 @@ namespace languageSchoolAPI.Controllers
             return CreatedAtAction(nameof(GetEnrollment), new { id = enrollment.EnrollmentId }, enrollment);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("PutEnrollment/{id}")]
         public async Task<IActionResult> PutEnrollment(int id, EnrollmentModel enrollment)
         {
             if (id != enrollment.EnrollmentId)
@@ -73,7 +73,7 @@ namespace languageSchoolAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteEnrollment/{id}")]
         public async Task<IActionResult> DeleteEnrollment(int id)
         {
             var enrollment = await _context.Enrollments.FindAsync(id);

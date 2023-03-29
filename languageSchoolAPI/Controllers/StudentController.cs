@@ -1,4 +1,5 @@
 ﻿using languageSchoolAPI.Context;
+using languageSchoolAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,12 +11,16 @@ namespace languageSchoolAPI.Controllers
     {
         private readonly LanguageSchoolContext _context;
         private readonly LogEntryController _logEntryController;
+        private readonly EnrollmentController _enrollmentController;
 
-        public StudentsController(LanguageSchoolContext context, LogEntryController logEntryController)
+        public StudentsController(LanguageSchoolContext context, LogEntryController logEntryController, EnrollmentController enrollmentController)
         {
             _context = context;
             _logEntryController = logEntryController;
+            _enrollmentController = enrollmentController;
         }
+
+        //Continuar aqui add validação matricula automatica
 
         [HttpPost("CreateStudent")]
         public async Task<IActionResult> CreateStudent(StudentModel student)
@@ -30,6 +35,81 @@ namespace languageSchoolAPI.Controllers
             {
                 _context.Students.Add(student);
                 await _context.SaveChangesAsync();
+                if (student.English)
+                {
+                    EnrollmentModel enrollment = new EnrollmentModel();
+                    enrollment.StudentId = student.StudentId;
+                    enrollment.EnrollmentDate = DateTime.Now;
+
+                    switch (student.ProficiencyLevelEnglish)
+                    {
+                        case 1:
+                            enrollment.ClassroomId = 1;
+                            break;
+                        case 2:
+                            enrollment.ClassroomId = 2;
+                            break;
+                        case 3:
+                            enrollment.ClassroomId = 3;
+                            break;
+                        default:
+                            enrollment.ClassroomId = 1;
+                            break;
+
+                    }
+                    await _enrollmentController.PostEnrollment(enrollment);
+                }
+
+                if (student.Spanish)
+                {
+                    EnrollmentModel enrollment = new EnrollmentModel();
+                    enrollment.StudentId = student.StudentId;
+                    enrollment.EnrollmentDate = DateTime.Now;
+
+                    switch (student.ProficiencyLevelEnglish)
+                    {
+                        case 1:
+                            enrollment.ClassroomId = 4;
+                            break;
+                        case 2:
+                            enrollment.ClassroomId = 5;
+                            break;
+                        case 3:
+                            enrollment.ClassroomId = 6;
+                            break;
+                        default:
+                            enrollment.ClassroomId = 4;
+                            break;
+
+                    }
+                    await _enrollmentController.PostEnrollment(enrollment);
+                }
+
+                if (student.French)
+                {
+                    EnrollmentModel enrollment = new EnrollmentModel();
+                    enrollment.StudentId = student.StudentId;
+                    enrollment.EnrollmentDate = DateTime.Now;
+
+                    switch (student.ProficiencyLevelEnglish)
+                    {
+                        case 1:
+                            enrollment.ClassroomId = 7;
+                            break;
+                        case 2:
+                            enrollment.ClassroomId = 8;
+                            break;
+                        case 3:
+                            enrollment.ClassroomId = 9;
+                            break;
+                        default:
+                            enrollment.ClassroomId = 7;
+                            break;
+
+                    }
+                    await _enrollmentController.PostEnrollment(enrollment);
+                }
+
                 string descripton = "Incluindo novo registro do aluno " + student.Name;
                 await _logEntryController.CreateLogEntry(descripton, "Novo registro");
                 return Ok(student);
@@ -65,7 +145,12 @@ namespace languageSchoolAPI.Controllers
                 studentBank.Birthdate = student.Birthdate;
                 studentBank.GenderId = student.GenderId;
                 studentBank.Nationality = student.Nationality;
-                studentBank.ProficiencyLevelId = student.ProficiencyLevelId;
+                studentBank.English = student.English;
+                studentBank.ProficiencyLevelEnglish = student.ProficiencyLevelEnglish;
+                studentBank.Spanish = student.Spanish;
+                studentBank.ProficiencyLevelSpanish = student.ProficiencyLevelSpanish;
+                studentBank.French = student.French;
+                studentBank.ProficiencyLevelFrench = student.ProficiencyLevelFrench;
                 studentBank.Observation = student.Observation;
 
                 _context.Students.Update(studentBank);
@@ -121,9 +206,22 @@ namespace languageSchoolAPI.Controllers
             {
                 return NotFound("Estudante não encontrado.");
             }
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-            return NoContent();
+
+            try
+            {
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync();
+                string descripton = "Excluindo registro do aluno " + student.Name;
+                await _logEntryController.CreateLogEntry(descripton, "Exclusão");
+                return NoContent();
+            }
+            catch
+            {
+                string descripton = "Erro ao excluindo registro do aluno " + student.Name;
+                await _logEntryController.CreateLogEntry(descripton, "Erro de exclusão");
+                return BadRequest("Erro. Não foi possivel exluir o registro.");
+            }
+
         }
 
         private async Task<IActionResult> ValidateStudent(StudentModel student, int? studentId = null)
@@ -145,14 +243,14 @@ namespace languageSchoolAPI.Controllers
                 return BadRequest("Gênero inválido.");
             }
 
-            List<int> proficiencyIds = new List<int> { 1, 2, 3 };
+            //List<int> proficiencyIds = new List<int> { 1, 2, 3 };
 
-            if (!proficiencyIds.Contains(student.ProficiencyLevelId))
-            {
-                string descripton = "Erro ao tentar gravar o registro do aluno " + student.Name + ". Nível de proficiência inválido.";
-                await _logEntryController.CreateLogEntry(descripton, "Erro novo registro");
-                return BadRequest("Nível de proficiência inválido.");
-            }
+            //if (!proficiencyIds.Contains(student.ProficiencyLevelId))
+            //{
+            //    string descripton = "Erro ao tentar gravar o registro do aluno " + student.Name + ". Nível de proficiência inválido.";
+            //    await _logEntryController.CreateLogEntry(descripton, "Erro novo registro");
+            //    return BadRequest("Nível de proficiência inválido.");
+            //}
 
             return null;
         }

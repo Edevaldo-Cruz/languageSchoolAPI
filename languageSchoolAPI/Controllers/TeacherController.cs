@@ -16,15 +16,13 @@ namespace languageSchoolAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Teachers
-        [HttpGet]
+        [HttpGet("GetTeachers")]
         public async Task<ActionResult<IEnumerable<TeacherModel>>> GetTeachers()
         {
             return await _context.Teachers.ToListAsync();
         }
 
-        // GET: api/Teachers/5
-        [HttpGet("{id}")]
+        [HttpGet("GetTeacher/{id}")]
         public async Task<ActionResult<TeacherModel>> GetTeacher(int id)
         {
             var teacher = await _context.Teachers.FindAsync(id);
@@ -37,8 +35,8 @@ namespace languageSchoolAPI.Controllers
             return teacher;
         }
 
-        // PUT: api/Teachers/5
-        [HttpPut("{id}")]
+        
+        [HttpPut("PutTeacher/{id}")]
         public async Task<IActionResult> PutTeacher(int id, TeacherModel teacher)
         {
             if (id != teacher.TeacherId)
@@ -67,8 +65,8 @@ namespace languageSchoolAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Teachers
-        [HttpPost]
+        
+        [HttpPost("PostTeacher")]
         public async Task<ActionResult<TeacherModel>> PostTeacher(TeacherModel teacher)
         {
             _context.Teachers.Add(teacher);
@@ -77,8 +75,7 @@ namespace languageSchoolAPI.Controllers
             return CreatedAtAction("GetTeacher", new { id = teacher.TeacherId }, teacher);
         }
 
-        // DELETE: api/Teachers/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteTeacher/{id}")]
         public async Task<IActionResult> DeleteTeacher(int id)
         {
             var teacher = await _context.Teachers.FindAsync(id);

@@ -86,9 +86,14 @@ namespace languageSchoolAPI.Migrations
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GenderId = table.Column<int>(type: "int", nullable: false),
-                    ProficiencyLevelId = table.Column<int>(type: "int", nullable: false),
                     Nationality = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Observation = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                    Observation = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    English = table.Column<bool>(type: "bit", nullable: false),
+                    ProficiencyLevelEnglish = table.Column<int>(type: "int", nullable: false),
+                    Spanish = table.Column<bool>(type: "bit", nullable: false),
+                    ProficiencyLevelSpanish = table.Column<int>(type: "int", nullable: false),
+                    French = table.Column<bool>(type: "bit", nullable: false),
+                    ProficiencyLevelFrench = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

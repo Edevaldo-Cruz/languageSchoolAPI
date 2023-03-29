@@ -122,6 +122,12 @@ namespace languageSchoolAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("English")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("French")
+                        .HasColumnType("bit");
+
                     b.Property<int>("GenderId")
                         .HasColumnType("int");
 
@@ -145,8 +151,17 @@ namespace languageSchoolAPI.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("ProficiencyLevelId")
+                    b.Property<int>("ProficiencyLevelEnglish")
                         .HasColumnType("int");
+
+                    b.Property<int>("ProficiencyLevelFrench")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProficiencyLevelSpanish")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Spanish")
+                        .HasColumnType("bit");
 
                     b.HasKey("StudentId");
 
