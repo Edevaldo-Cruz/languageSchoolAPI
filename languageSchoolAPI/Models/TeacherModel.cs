@@ -12,7 +12,7 @@ namespace languageSchoolAPI.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public DateTime Birthdate { get; set; }
-        public string Gender { get; set; }
+        public string GenderId { get; set; }
         public string Nationality { get; set; }
         public string Observation { get; set; }
     }

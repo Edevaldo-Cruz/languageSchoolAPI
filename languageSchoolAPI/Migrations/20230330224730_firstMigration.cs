@@ -14,39 +14,6 @@ namespace languageSchoolAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Classrooms",
-                columns: table => new
-                {
-                    ClassroomId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Course = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Teacher = table.Column<int>(type: "int", nullable: false),
-                    ProficiencyLevel = table.Column<int>(type: "int", nullable: false),
-                    Time = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoomNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Enrollments",
-                columns: table => new
-                {
-                    EnrollmentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    ClassroomId = table.Column<int>(type: "int", nullable: false),
-                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Enrollments", x => x.EnrollmentId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Gender",
                 columns: table => new
                 {
@@ -112,13 +79,64 @@ namespace languageSchoolAPI.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Observation = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teachers", x => x.TeacherId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Classrooms",
+                columns: table => new
+                {
+                    ClassroomId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Course = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    ProficiencyLevel = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RoomNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomId);
+                    table.ForeignKey(
+                        name: "FK_Classrooms_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "TeacherId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Enrollments",
+                columns: table => new
+                {
+                    EnrollmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    ClassroomId = table.Column<int>(type: "int", nullable: false),
+                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Enrollments", x => x.EnrollmentId);
+                    table.ForeignKey(
+                        name: "FK_Enrollments_Classrooms_ClassroomId",
+                        column: x => x.ClassroomId,
+                        principalTable: "Classrooms",
+                        principalColumn: "ClassroomId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Enrollments_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -142,6 +160,21 @@ namespace languageSchoolAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Classrooms_TeacherId",
+                table: "Classrooms",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enrollments_ClassroomId",
+                table: "Enrollments",
+                column: "ClassroomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enrollments_StudentId",
+                table: "Enrollments",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_CPF",
                 table: "Students",
                 column: "CPF",
@@ -152,9 +185,6 @@ namespace languageSchoolAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Classrooms");
-
-            migrationBuilder.DropTable(
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
@@ -162,6 +192,9 @@ namespace languageSchoolAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProficiencyLevel");
+
+            migrationBuilder.DropTable(
+                name: "Classrooms");
 
             migrationBuilder.DropTable(
                 name: "Students");

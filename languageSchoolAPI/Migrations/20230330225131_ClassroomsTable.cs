@@ -12,7 +12,7 @@ namespace languageSchoolAPI.Migrations
         {
             migrationBuilder.InsertData(
                  table: "Classrooms",
-                 columns: new[] { "ClassroomId", "Course", "Teacher", "ProficiencyLevel", "Time", "Language", "RoomNumber" },
+                 columns: new[] { "ClassroomId", "Course", "TeacherId", "ProficiencyLevel", "Time", "Language", "RoomNumber" },
                  values: new object[,]
                  {
                     { 1, "Introdução ao Inglês", 1, 1, "Segunda-feira, 19h-21h", "Inglês", "101A" },

@@ -12,8 +12,8 @@ using languageSchoolAPI.Context;
 namespace languageSchoolAPI.Migrations
 {
     [DbContext(typeof(LanguageSchoolContext))]
-    [Migration("20230328224143_teacherTable")]
-    partial class teacherTable
+    [Migration("20230330225131_ClassroomsTable")]
+    partial class ClassroomsTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,20 +184,23 @@ namespace languageSchoolAPI.Migrations
 
                     b.Property<string>("Course")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Language")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ProficiencyLevel")
                         .HasColumnType("int");
 
                     b.Property<string>("RoomNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("Teacher")
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
                     b.Property<string>("Time")
@@ -205,6 +208,8 @@ namespace languageSchoolAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClassroomId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Classrooms");
                 });
@@ -227,6 +232,10 @@ namespace languageSchoolAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("EnrollmentId");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Enrollments");
                 });
@@ -254,7 +263,7 @@ namespace languageSchoolAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
+                    b.Property<string>("GenderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -277,6 +286,36 @@ namespace languageSchoolAPI.Migrations
                     b.HasKey("TeacherId");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("languageSchoolAPI.Models.ClassroomModel", b =>
+                {
+                    b.HasOne("languageSchoolAPI.Models.TeacherModel", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("languageSchoolAPI.Models.EnrollmentModel", b =>
+                {
+                    b.HasOne("languageSchoolAPI.Models.ClassroomModel", "Classroom")
+                        .WithMany()
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StudentModel", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Student");
                 });
 #pragma warning restore 612, 618
         }
