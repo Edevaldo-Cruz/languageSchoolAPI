@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace languageSchoolAPI.Models
 {
@@ -17,8 +18,10 @@ namespace languageSchoolAPI.Models
         [Required(ErrorMessage = "A data de matrícula é obrigatória.")]
         public DateTime EnrollmentDate { get; set; }
 
+        [JsonIgnore]
         public virtual StudentModel Student { get; set; }
 
+        [JsonIgnore]
         public virtual ClassroomModel Classroom { get; set; }
     }
 

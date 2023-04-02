@@ -22,80 +22,6 @@ namespace languageSchoolAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Gender", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gender");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Masculino"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Feminino"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Não-binário"
-                        });
-                });
-
-            modelBuilder.Entity("ProficiencyLevel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProficiencyLevel");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Level = 1,
-                            Name = "Básico"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Level = 2,
-                            Name = "Intermediário"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Level = 3,
-                            Name = "Avançado"
-                        });
-                });
-
             modelBuilder.Entity("StudentModel", b =>
                 {
                     b.Property<int>("StudentId")
@@ -164,9 +90,6 @@ namespace languageSchoolAPI.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("StudentId");
-
-                    b.HasIndex("CPF")
-                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -247,38 +170,44 @@ namespace languageSchoolAPI.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("GenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Nationality")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Observation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("TeacherId");
 

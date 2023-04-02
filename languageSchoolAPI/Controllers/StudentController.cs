@@ -19,9 +19,7 @@ namespace languageSchoolAPI.Controllers
             _logEntryController = logEntryController;
             _enrollmentController = enrollmentController;
         }
-
-        //Continuar aqui add validação matricula automatica
-
+             
         [HttpPost("CreateStudent")]
         public async Task<IActionResult> CreateStudent(StudentModel student)
         {
@@ -35,36 +33,36 @@ namespace languageSchoolAPI.Controllers
             {
                 _context.Students.Add(student);
                 await _context.SaveChangesAsync();
+
                 if (student.English)
                 {
                     EnrollmentModel enrollment = new EnrollmentModel();
                     enrollment.StudentId = student.StudentId;
-                    enrollment.EnrollmentDate = DateTime.Now;
+
+                    ClassroomModel classroom;
 
                     switch (student.ProficiencyLevelEnglish)
                     {
-                        case 1:
-                            enrollment.ClassroomId = 1;
-                            break;
                         case 2:
-                            enrollment.ClassroomId = 2;
+                            classroom = await _context.Classrooms.FindAsync(2);
                             break;
                         case 3:
-                            enrollment.ClassroomId = 3;
+                            classroom = await _context.Classrooms.FindAsync(3);
                             break;
                         default:
-                            enrollment.ClassroomId = 1;
+                            classroom = await _context.Classrooms.FindAsync(1);
                             break;
 
                     }
-                    await _enrollmentController.PostEnrollment(enrollment);
+                    enrollment.Classroom = classroom;
+                    await _enrollmentController.CreateEnrollment(enrollment.StudentId, enrollment.ClassroomId);
                 }
+
 
                 if (student.Spanish)
                 {
                     EnrollmentModel enrollment = new EnrollmentModel();
                     enrollment.StudentId = student.StudentId;
-                    enrollment.EnrollmentDate = DateTime.Now;
 
                     switch (student.ProficiencyLevelEnglish)
                     {
@@ -82,14 +80,13 @@ namespace languageSchoolAPI.Controllers
                             break;
 
                     }
-                    await _enrollmentController.PostEnrollment(enrollment);
+                    await _enrollmentController.CreateEnrollment(enrollment.StudentId, enrollment.ClassroomId);
                 }
 
                 if (student.French)
                 {
                     EnrollmentModel enrollment = new EnrollmentModel();
                     enrollment.StudentId = student.StudentId;
-                    enrollment.EnrollmentDate = DateTime.Now;
 
                     switch (student.ProficiencyLevelEnglish)
                     {
@@ -107,23 +104,23 @@ namespace languageSchoolAPI.Controllers
                             break;
 
                     }
-                    await _enrollmentController.PostEnrollment(enrollment);
+                    await _enrollmentController.CreateEnrollment(enrollment.StudentId, enrollment.ClassroomId);
                 }
 
                 string descripton = "Incluindo novo registro do aluno " + student.Name;
-                await _logEntryController.CreateLogEntry(descripton, "Novo registro");
+                await _logEntryController.CreateLogEntry(descripton, "Novo registro aluno");
                 return Ok(student);
             }
             catch (DbUpdateException ex)
             {
                 string descripton = "Erro ao tentar gravar o registro do aluno " + student.Name + ". Erro: " + ex;
-                await _logEntryController.CreateLogEntry(descripton, "Erro novo registro");
+                await _logEntryController.CreateLogEntry(descripton, "Erro novo registro aluno");
                 return BadRequest(ex);
             }
         }
 
-        [HttpPut("UpdateStudent/{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, StudentModel student)
+        [HttpPut("EditStudent/{id}")]
+        public async Task<IActionResult> EditStudent(int id, StudentModel student)
         {
             var studentBank = await _context.Students.FindAsync(id);
             var validationError = await ValidateStudent(student, id);
@@ -157,14 +154,14 @@ namespace languageSchoolAPI.Controllers
                 await _context.SaveChangesAsync();
 
                 string descripton = "Alterando registro do aluno " + studentBank.Name;
-                await _logEntryController.CreateLogEntry(descripton, "Alteração de registro");
+                await _logEntryController.CreateLogEntry(descripton, "Alteração de registro aluno");
                 return Ok(studentBank);
             }
             catch (Exception ex)
             {
                 string descripton = "Erro ao tentar alterar o registro do aluno " + student.Name + ". Erro: " + ex;
-                await _logEntryController.CreateLogEntry(descripton, "Erro alterar registro");
-                return StatusCode(500, $"Ocorreu um erro ao atualizar o estudante: {ex.Message}");
+                await _logEntryController.CreateLogEntry(descripton, "Erro alterar registro aluno");
+                return StatusCode(422, "Ocorreu um erro ao atualizar o estudante: " + ex.Message);
             }
         }
 
@@ -204,21 +201,22 @@ namespace languageSchoolAPI.Controllers
             var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
-                return NotFound("Estudante não encontrado.");
+                return NotFound("Estudante não encontrado");
             }
 
             try
             {
                 _context.Students.Remove(student);
                 await _context.SaveChangesAsync();
+
                 string descripton = "Excluindo registro do aluno " + student.Name;
-                await _logEntryController.CreateLogEntry(descripton, "Exclusão");
+                await _logEntryController.CreateLogEntry(descripton, "Exclusão aluno");
                 return NoContent();
             }
             catch
             {
                 string descripton = "Erro ao excluindo registro do aluno " + student.Name;
-                await _logEntryController.CreateLogEntry(descripton, "Erro de exclusão");
+                await _logEntryController.CreateLogEntry(descripton, "Erro de exclusão aluno");
                 return BadRequest("Erro. Não foi possivel exluir o registro.");
             }
 
@@ -241,16 +239,7 @@ namespace languageSchoolAPI.Controllers
                 string descripton = "Erro ao tentar gravar o registro do aluno " + student.Name + ". Gênero inválido.";
                 await _logEntryController.CreateLogEntry(descripton, "Erro novo registro");
                 return BadRequest("Gênero inválido.");
-            }
-
-            //List<int> proficiencyIds = new List<int> { 1, 2, 3 };
-
-            //if (!proficiencyIds.Contains(student.ProficiencyLevelId))
-            //{
-            //    string descripton = "Erro ao tentar gravar o registro do aluno " + student.Name + ". Nível de proficiência inválido.";
-            //    await _logEntryController.CreateLogEntry(descripton, "Erro novo registro");
-            //    return BadRequest("Nível de proficiência inválido.");
-            //}
+            }       
 
             return null;
         }
